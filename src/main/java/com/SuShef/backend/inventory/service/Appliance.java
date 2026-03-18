@@ -1,10 +1,8 @@
 package com.SuShef.backend.inventory.service;
 
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Enumerated;
+import lombok.*;
 
 @Entity
 @Data
@@ -14,7 +12,11 @@ import lombok.NoArgsConstructor;
 public class Appliance extends Item{
     private String brand;
     private String model;
+    @Enumerated
+    @NonNull
     private Status status;
+    @Enumerated
+    @NonNull
     private Category category;
 
 

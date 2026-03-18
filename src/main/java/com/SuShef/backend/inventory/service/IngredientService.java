@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -18,9 +19,6 @@ public class IngredientService{
         return ingredientRepository.save(ingredient);
     }
 
-    public Ingredient updateIngredient(Ingredient ingredient){
-        return ingredientRepository.save(ingredient);
-    }
 
     public void moveLocation(Long id, Location location){
         Ingredient ingredient = ingredientRepository.findById(id)
@@ -44,28 +42,22 @@ public class IngredientService{
         ingredientRepository.save(ingredient);
     }
 
-    public void incrementQuantity(Long id) {
+    public void updateQuantity(Long id, int newQuantity) {
         Ingredient ingredient = ingredientRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
 
-        ingredient.setQuantity(ingredient.getQuantity() + 1);
+        ingredient.setQuantity(newQuantity);
         ingredientRepository.save(ingredient);
     }
 
-    public void decrementQuantity(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
-
-        if (ingredient.getQuantity() > 0) {
-            ingredient.setQuantity(ingredient.getQuantity() - 1);
-            ingredientRepository.save(ingredient);
-        }
-
-    }
 
     public void updateIngredient(Ingredient ingredient, Long id) {
         deleteIngredient(id);
         addIngredient(ingredient);
+    }
+
+    public List<Ingredient> getAllIngredients(){
+        return ingredientRepository.findAll();
     }
 
 
