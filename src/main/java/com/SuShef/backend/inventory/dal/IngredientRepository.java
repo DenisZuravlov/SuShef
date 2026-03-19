@@ -3,6 +3,7 @@ package com.SuShef.backend.inventory.dal;
 import com.SuShef.backend.inventory.service.Ingredient;
 import com.SuShef.backend.inventory.service.ItemClass;
 import com.SuShef.backend.inventory.service.Location;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findAllByOrderByQuantityDesc();
     List<Ingredient> findAllByOrderByLocationAsc();
     List<Ingredient> findAllByOrderByLocationDesc();
+    List<Ingredient> findAllByUserId(@NotNull long userId);
 
 
 

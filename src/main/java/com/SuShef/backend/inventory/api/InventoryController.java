@@ -4,9 +4,12 @@ import com.SuShef.backend.inventory.service.Appliance;
 import com.SuShef.backend.inventory.service.ApplianceService;
 import com.SuShef.backend.inventory.service.Ingredient;
 import com.SuShef.backend.inventory.service.IngredientService;
+import com.SuShef.backend.middlewares.UserPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,11 +21,29 @@ public class InventoryController {
 
     @GetMapping("/ingredients")
     public Iterable<Ingredient> getAllIngredients(){
-        return ingredientService.getAllIngredients();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        assert auth != null;
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+
+        // 2. Explicitly set the userId on the entity
+        assert principal != null;
+        principal.getId();
+
+        return ingredientService.getAllIngredients(principal.getId());
     }
 
     @PostMapping("/ingredients")
     public ResponseEntity<Ingredient> addIngredient(@Valid @RequestBody Ingredient ingredient){
+        // 1. Extract the authenticated user from the SecurityContext
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        assert auth != null;
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+
+        // 2. Explicitly set the userId on the entity
+        assert principal != null;
+        ingredient.setUserId(principal.getId());
+
         return ResponseEntity.status(201).body(ingredientService.addIngredient(ingredient));
     }
 

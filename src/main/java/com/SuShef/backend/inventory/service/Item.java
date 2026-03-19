@@ -4,11 +4,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 
 import java.time.LocalDate;
 
 
 @MappedSuperclass
+@FilterDef(name = "tenantFilter", parameters = @ParamDef(name = "userId", type = Long.class))
 @Data
 public class Item {
     @Id

@@ -2,6 +2,7 @@ package com.SuShef.backend.inventory.service;
 
 import com.SuShef.backend.inventory.dal.IngredientRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +54,8 @@ public class IngredientService extends ItemService{
 
     }
 
-    public List<Ingredient> getAllIngredients(){
-        return ingredientRepository.findAll();
+    public List<Ingredient> getAllIngredients(@NotNull long userId){
+        return ingredientRepository.findAllByUserId(userId);
     }
 
     public List<Ingredient> getAllIngredientsByNameAsc(){
