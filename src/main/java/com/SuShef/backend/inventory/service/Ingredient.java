@@ -23,7 +23,7 @@ public class Ingredient extends Item{
     private LocalDate expiryDate;
     @NotNull
     private int quantity;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Location location;
 

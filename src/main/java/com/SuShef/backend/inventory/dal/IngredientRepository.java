@@ -11,10 +11,19 @@ import java.util.List;
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
-    List<Ingredient> findByName(String name);
-    List<Ingredient> findByLocation(Location location);
-    List<Ingredient> findByItemClass(ItemClass itemClass);
-    List<Ingredient> findByQuantity(int quantity);
+
+
+    List<Ingredient> findAllByOrderByNameAsc();
+    List<Ingredient> findAllByOrderByNameDesc();
+    List<Ingredient> findAllByOrderByDateCreatedAsc();
+    List<Ingredient> findAllByOrderByDateCreatedDesc();
+    List<Ingredient> findAllByOrderByExpiryDateAsc();
+    List<Ingredient> findAllByOrderByExpiryDateDesc();
+    List<Ingredient> findAllByOrderByQuantityAsc();
+    List<Ingredient> findAllByOrderByQuantityDesc();
+    List<Ingredient> findAllByOrderByLocationAsc();
+    List<Ingredient> findAllByOrderByLocationDesc();
+
 
 
 }

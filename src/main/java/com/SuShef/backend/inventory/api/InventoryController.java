@@ -16,35 +16,41 @@ public class InventoryController {
     private final IngredientService ingredientService;
     private final ApplianceService applianceService;
 
-    @GetMapping
+    @GetMapping("/ingredients")
     public Iterable<Ingredient> getAllIngredients(){
         return ingredientService.getAllIngredients();
     }
 
     @PostMapping("/ingredients")
     public ResponseEntity<Ingredient> addIngredient(@Valid @RequestBody Ingredient ingredient){
-        return ResponseEntity.ok(ingredientService.addIngredient(ingredient));
+        return ResponseEntity.status(201).body(ingredientService.addIngredient(ingredient));
     }
 
     @PutMapping("/ingredients/{id}")
-    public ResponseEntity<Void> updateIngredient(@Valid @RequestBody Ingredient ingredient, @PathVariable Long id){
+    public ResponseEntity<Ingredient> updateIngredient(@Valid @RequestBody Ingredient ingredient, @PathVariable Long id){
         ingredientService.updateIngredient(ingredient, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/ingredients/quantity/{id}")
+    public ResponseEntity<Ingredient> updateIngredientQuantity(@PathVariable Long id, @RequestParam int quantity){
+        ingredientService.updateIngredientQuantity(id, quantity);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/ingredients/{id}")
     public ResponseEntity<Void> deleteIngredient(@PathVariable Long id){
         ingredientService.deleteIngredient(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/appliances")
     public ResponseEntity<Appliance> addAppliance(@Valid @RequestBody Appliance appliance){
-        return ResponseEntity.ok(applianceService.addAppliance(appliance));
+        return ResponseEntity.status(201).body(applianceService.addAppliance(appliance));
     }
 
     @PutMapping("/appliances/{id}")
-    public ResponseEntity<Void> updateAppliance(@Valid @RequestBody Appliance appliance, @PathVariable Long id){
+    public ResponseEntity<Appliance> updateAppliance(@Valid @RequestBody Appliance appliance, @PathVariable Long id){
         applianceService.updateAppliance(appliance, id);
         return ResponseEntity.ok().build();
     }
@@ -52,10 +58,10 @@ public class InventoryController {
     @DeleteMapping("/appliances/{id}")
     public ResponseEntity<Void> deleteAppliance(@PathVariable Long id){
         applianceService.deleteAppliance(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/appliances/bring")
+    @GetMapping("/appliances")
     public Iterable<Appliance> getAllAppliances(){
         return applianceService.getAllAppliances();
     }
