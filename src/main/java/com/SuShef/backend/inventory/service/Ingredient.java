@@ -19,9 +19,11 @@ import java.time.LocalDate;
 
 public class Ingredient extends Item{
     @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private LocalDate expiryDate;
+    @NotNull
     private int quantity;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Location location;
 

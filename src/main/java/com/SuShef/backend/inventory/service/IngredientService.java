@@ -5,67 +5,95 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class IngredientService{
+public class IngredientService extends ItemService{
     private final IngredientRepository ingredientRepository;
 
     public Ingredient addIngredient(Ingredient ingredient){
         return ingredientRepository.save(ingredient);
     }
 
-    public Ingredient updateIngredient(Ingredient ingredient){
-        return ingredientRepository.save(ingredient);
-    }
-
-    public void moveLocation(Long id, Location location){
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
-        ingredient.setLocation(location);
-        ingredientRepository.save(ingredient);
-    }
 
     public void deleteIngredient(Long id){
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
+        ingredientRepository.findById(id)
+                .orElseThrow(() -> notFound("Ingredient", id));
 
         ingredientRepository.deleteById(id);
     }
 
-    public void updateExpiryDate(Long id, LocalDate newDate) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
-
-        ingredient.setExpiryDate(newDate);
-        ingredientRepository.save(ingredient);
+    public Ingredient updateIngredientQuantity(long id, int quantity){
+        Ingredient ingredientToUpdate = ingredientRepository.findById(id) // find the appliance by id
+                .orElseThrow(() -> notFound("Ingredient", id)); // throw an exception if the appliance is not found
+        if(ingredientToUpdate.getQuantity() + quantity < 0){
+            throw new NoSuchElementException("Quantity cannot be negative");
+        }
+        ingredientToUpdate.setQuantity(ingredientToUpdate.getQuantity() + quantity);
+        return ingredientRepository.save(ingredientToUpdate);
     }
 
-    public void incrementQuantity(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
+    public Ingredient updateIngredient(Ingredient ingredient, Long id) {
+        Ingredient ingredientToUpdate = ingredientRepository.findById(id) // find the appliance by id
+                .orElseThrow(() -> notFound("Ingredient", id)); // throw an exception if the appliance is not found
+        updateItem(ingredientToUpdate, ingredient);
 
-        ingredient.setQuantity(ingredient.getQuantity() + 1);
-        ingredientRepository.save(ingredient);
-    }
-
-    public void decrementQuantity(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Ingredient ID " + id + " not found"));
-
-        if (ingredient.getQuantity() > 0) {
-            ingredient.setQuantity(ingredient.getQuantity() - 1);
-            ingredientRepository.save(ingredient);
+        if(!Objects.equals(ingredientToUpdate.getExpiryDate(), ingredient.getExpiryDate())){ // if the expiry date is different
+            return ingredientRepository.save(ingredientToUpdate); // save new ingredient instead of updating
         }
 
+        ingredientToUpdate.setQuantity(ingredient.getQuantity());
+        ingredientToUpdate.setLocation(ingredient.getLocation());
+        ingredientRepository.save(ingredientToUpdate);
+        return ingredientToUpdate;
+
     }
 
-    public void updateIngredient(Ingredient ingredient, Long id) {
-        deleteIngredient(id);
-        addIngredient(ingredient);
+    public List<Ingredient> getAllIngredients(){
+        return ingredientRepository.findAll();
+    }
+
+    public List<Ingredient> getAllIngredientsByNameAsc(){
+        return ingredientRepository.findAllByOrderByNameAsc();
+    }
+    public List<Ingredient> getAllIngredientsByNameDesc(){
+        return ingredientRepository.findAllByOrderByNameDesc();
+    }
+
+
+    public List<Ingredient> getAllIngredientsByDateCreatedAsc(){
+        return ingredientRepository.findAllByOrderByDateCreatedAsc();
+    }
+    public List<Ingredient> getAllIngredientsByDateCreatedDesc(){
+        return ingredientRepository.findAllByOrderByDateCreatedDesc();
+    }
+
+
+    public List<Ingredient> GetAllIngredientsByExpiryDateAsc(){
+        return ingredientRepository.findAllByOrderByExpiryDateAsc();
+    }
+    public List<Ingredient> GetAllIngredientsByExpiryDateDesc(){
+        return ingredientRepository.findAllByOrderByExpiryDateDesc();
+    }
+
+
+    public List<Ingredient> GetAllIngredientsByQuantityAsc(){
+        return ingredientRepository.findAllByOrderByQuantityAsc();
+    }
+    public List<Ingredient> GetAllIngredientsByQuantityDesc(){
+        return ingredientRepository.findAllByOrderByQuantityDesc();
+    }
+
+
+    public List<Ingredient> GetAllIngredientsByLocationAsc(){
+        return ingredientRepository.findAllByOrderByLocationAsc();
+    }
+    public List<Ingredient> GetAllIngredientsByLocationDesc(){
+        return ingredientRepository.findAllByOrderByLocationDesc();
     }
 
 
