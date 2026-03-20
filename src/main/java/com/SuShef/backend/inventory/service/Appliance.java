@@ -1,5 +1,6 @@
 package com.SuShef.backend.inventory.service;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,10 +15,10 @@ public class  Appliance extends Item{
     private String brand;
     private String model;
     @Enumerated(EnumType.STRING)
-    @NonNull
+    @Column(nullable = false)
     private Status status;
     @Enumerated(EnumType.STRING)
-    @NonNull
+    @Column(nullable = false)
     private Category category;
 
 

@@ -4,9 +4,12 @@ import com.SuShef.backend.inventory.service.Appliance;
 import com.SuShef.backend.inventory.service.ApplianceService;
 import com.SuShef.backend.inventory.service.Ingredient;
 import com.SuShef.backend.inventory.service.IngredientService;
+import com.SuShef.backend.middlewares.UserPrincipal;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +26,7 @@ public class InventoryController {
 
     @PostMapping("/ingredients")
     public ResponseEntity<Ingredient> addIngredient(@Valid @RequestBody Ingredient ingredient){
+
         return ResponseEntity.status(201).body(ingredientService.addIngredient(ingredient));
     }
 

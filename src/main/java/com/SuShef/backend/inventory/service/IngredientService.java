@@ -2,6 +2,7 @@ package com.SuShef.backend.inventory.service;
 
 import com.SuShef.backend.inventory.dal.IngredientRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
