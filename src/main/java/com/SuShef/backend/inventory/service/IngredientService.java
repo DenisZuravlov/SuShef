@@ -54,8 +54,8 @@ public class IngredientService extends ItemService{
 
     }
 
-    public List<Ingredient> getAllIngredients(@NotNull long userId){
-        return ingredientRepository.findAllByUserId(userId);
+    public List<Ingredient> getAllIngredients(){
+        return ingredientRepository.findAll();
     }
 
     public List<Ingredient> getAllIngredientsByNameAsc(){

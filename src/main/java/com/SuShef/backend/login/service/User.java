@@ -13,11 +13,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @NonNull
+    @Column(unique = true, nullable = false)
     private String password;
-//    @NonNull
+    @Column(unique = true, nullable = false)
     private String email;
-//    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
     private String phone;
 }
